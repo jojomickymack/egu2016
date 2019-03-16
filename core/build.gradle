@@ -1,21 +1,38 @@
+apply plugin: 'kotlin'
+
+sourceCompatibility = 1.6
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-eclipse.project.name = appName + '-core'
 
 dependencies {
-  compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-  compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-  compile "com.badlogicgames.box2dlights:box2dlights:$box2dlightsVersion"
-  compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-  compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
-  compile "com.github.czyzby:ktx-app:$ktxStyleVersion"
-  compile "com.github.czyzby:ktx-style:$ktxStyleVersion"
-  compile "com.github.czyzby:ktx-scene2d:$ktxScene2DVersion"
-  compile "com.github.czyzby:ktx-assets:$ktxAssetsVersion"
-  compile "com.github.czyzby:ktx-inject:$ktxInjectVersion"
-  compile "com.github.czyzby:ktx-actors:$ktxActorsVersion"
-  compile "com.github.czyzby:ktx-math:$ktxMathVersion"
-  compile "com.github.czyzby:ktx-collections:$ktxCollectionsVersion"
-  compile "com.github.czyzby:ktx-i18n:$ktxI18nVersion"
-  compile "com.github.czyzby:ktx-log:$ktxLogVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+    implementation "com.badlogicgames.box2dlights:box2dlights:$box2dlightsVersion"
+    implementation "com.github.czyzby:ktx-app:$ktxVersion"
+    implementation "com.github.czyzby:ktx-style:$ktxVersion"
+    implementation "com.github.czyzby:ktx-scene2d:$ktxVersion"
+    implementation "com.github.czyzby:ktx-assets:$ktxVersion"
+    implementation "com.github.czyzby:ktx-inject:$ktxVersion"
+    implementation "com.github.czyzby:ktx-actors:$ktxVersion"
+    implementation "com.github.czyzby:ktx-math:$ktxVersion"
+    implementation "com.github.czyzby:ktx-collections:$ktxVersion"
+    implementation "com.github.czyzby:ktx-i18n:$ktxVersion"
+    implementation "com.github.czyzby:ktx-log:$ktxVersion"
 }
-        
+
+sourceSets.main.java.srcDirs = ['src/']
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+}

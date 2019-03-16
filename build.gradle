@@ -1,51 +1,80 @@
 buildscript {
-  repositories {
-    mavenLocal()
-    mavenCentral()
+    ext {
+        appName = 'egu2016-example'
+        kotlinVersion = '1.3.20'
+        gdxVersion = '1.9.8'
+        ktxVersion = '1.9.4-b2'
+        box2dlightsVersion = '1.4'
+    }
+
+    repositories {
+        google()
+        mavenLocal()
+        mavenCentral()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+    }
+}
+
+repositories {
     jcenter()
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
-  }
-  dependencies {
-    classpath "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-  }
 }
 
 allprojects {
-  apply plugin: 'eclipse'
-  apply plugin: 'idea'
+    version = '1.0'
+
+    repositories {
+        google()
+        mavenLocal()
+        mavenCentral()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+        maven { url 'https://oss.sonatype.org/content/repositories/releases/' }
+    }
 }
 
-configure(subprojects) {
-  apply plugin: 'java'
-  apply plugin: 'kotlin'
-  sourceCompatibility = 1.6
+project(':desktop') {
+    apply plugin: 'kotlin'
+    apply plugin: 'application'
 }
 
-subprojects {
-  version = '0.0.1-SNAPSHOT'
-  ext.appName = 'egu2016'
-  repositories {
-    mavenLocal()
-    mavenCentral()
-    jcenter()
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
-  }
+project(':android') {
+    apply plugin: 'android'
+    apply plugin: 'kotlin-android'
+
+    configurations { natives }
+
+    dependencies {
+        implementation project(':core')
+        implementation "com.github.czyzby:ktx-app:$ktxVersion"
+        implementation "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
+        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
+        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
+        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"
+        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
+        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
+        implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+        natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-armeabi"
+        natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-armeabi-v7a"
+        natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-arm64-v8a"
+        natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86"
+        natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86_64"
+        implementation "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-controllers-android:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi"
+        natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi-v7a"
+        natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-arm64-v8a"
+        natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86"
+        natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86_64"
+        implementation "com.badlogicgames.box2dlights:box2dlights:$box2dlightsVersion"
+    }
 }
 
-// Clearing Eclipse project data in root folder:
-tasks.eclipse.doLast {
-  delete '.project'
-  delete '.classpath'
-  delete '.settings/'
+project(':core') {
+    apply plugin: 'kotlin'
 }
-
-import com.badlogic.gdx.tools.texturepacker.TexturePacker
-task packUi << {
-  TexturePacker.process(
-    'raw/ui',           // Raw assets path.
-    'assets',           // Output directory.
-    'skin'              // Name of the generated atlas (without extension).
-  )
-}
-
